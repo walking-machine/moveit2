@@ -518,7 +518,6 @@ void MotionPlanningFrame::computeSaveSceneButtonClicked()
     planning_display_->getPlanningSceneRO()->getPlanningSceneMsg(msg);
     try
     {
-      planning_scene_storage_->removePlanningScene(msg.name);
       planning_scene_storage_->addPlanningScene(msg);
     }
     catch (std::exception& ex)
