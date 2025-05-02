@@ -66,6 +66,7 @@
 #include <ompl/geometric/planners/prm/LazyPRMstar.h>
 #include <ompl/geometric/planners/prm/SPARS.h>
 #include <ompl/geometric/planners/prm/SPARStwo.h>
+#include <ompl/geometric/planners/prm/PRMcustom.h>
 
 #include <ompl/base/ConstrainedSpaceInformation.h>
 #include <ompl/base/spaces/constraint/ProjectedStateSpace.h>
@@ -227,6 +228,12 @@ MultiQueryPlannerAllocator::allocatePersistentPlanner<ompl::geometric::PRM>(cons
 };
 template <>
 inline ompl::base::Planner*
+MultiQueryPlannerAllocator::allocatePersistentPlanner<ompl::geometric::PRMcustom>(const ob::PlannerData& data)
+{
+  return new og::PRMcustom(data);
+};
+template <>
+inline ompl::base::Planner*
 MultiQueryPlannerAllocator::allocatePersistentPlanner<ompl::geometric::PRMstar>(const ob::PlannerData& data)
 {
   return new og::PRMstar(data);
@@ -312,6 +319,7 @@ void PlanningContextManager::registerDefaultPlanners()
   registerPlannerAllocatorHelper<og::SPARStwo>("geometric::SPARStwo");
   registerPlannerAllocatorHelper<og::STRIDE>("geometric::STRIDE");
   registerPlannerAllocatorHelper<og::TRRT>("geometric::TRRT");
+  registerPlannerAllocatorHelper<og::PRMcustom>("geometric::PRMcustom");
 }
 
 void PlanningContextManager::registerDefaultStateSpaces()
