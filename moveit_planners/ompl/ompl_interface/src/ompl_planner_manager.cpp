@@ -38,6 +38,7 @@
 #include <moveit/planning_interface/planning_interface.h>
 #include <moveit/planning_scene/planning_scene.h>
 
+#include <ompl/base/PlannerData.h>
 #include <ompl/util/Console.h>
 
 namespace ompl_interface
@@ -107,6 +108,22 @@ public:
     algs.reserve(pconfig.size());
     for (const std::pair<const std::string, planning_interface::PlannerConfigurationSettings>& config : pconfig)
       algs.push_back(config.first);
+  }
+
+  void getRoadmapData(int &verts, int &edges) override
+  {
+    auto mgr = ompl_interface_->getPlanningContextManager();
+    auto planner = mgr.getMQAlloc()->getFirstPlanner();
+    if (!planner) {
+      planning_interface::PlannerManager::getRoadmapData(verts, edges);
+      return;
+    }
+
+    ob::SpaceInformationPtr si(nullptr);
+    ob::PlannerData data(si);
+    planner->getPlannerData(data);
+    verts = data.numVertices();
+    edges = data.numEdges();
   }
 
   void setPlannerConfigurations(const planning_interface::PlannerConfigurationMap& pconfig) override

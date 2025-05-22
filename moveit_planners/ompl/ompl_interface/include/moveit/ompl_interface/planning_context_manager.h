@@ -41,6 +41,7 @@
 #include <moveit/constraint_samplers/constraint_sampler_manager.h>
 #include <moveit/macros/class_forward.h>
 
+#include <ompl/base/Planner.h>
 #include <ompl/base/PlannerDataStorage.h>
 
 #include <string>
@@ -57,6 +58,7 @@ public:
   template <typename T>
   ob::PlannerPtr allocatePlanner(const ob::SpaceInformationPtr& si, const std::string& new_name,
                                  const ModelBasedPlanningContextSpecification& spec);
+  ob::Planner *getFirstPlanner() { return planners_.size() ? planners_.begin()->second.get() : nullptr; }
 
 private:
   template <typename T>
@@ -203,6 +205,8 @@ public:
   {
     return state_space_factories_;
   }
+
+  MultiQueryPlannerAllocator *getMQAlloc() { return &planner_allocator_; }
 
   ConfiguredPlannerSelector getPlannerSelector() const;
 

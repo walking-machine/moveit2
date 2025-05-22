@@ -202,6 +202,8 @@ public:
     return config_settings_;
   }
 
+  virtual void getRoadmapData(int &verts, int &edges) { verts = -4; edges = -4; }
+
   /// \brief Request termination, if a solve() function is currently computing plans
   void terminate() const;
 
